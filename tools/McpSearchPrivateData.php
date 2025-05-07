@@ -10,6 +10,7 @@ use WP_Error;
  * Registers a tool to search private data (dummy implementation for Phase 1).
  *
  * @package Artpi\Template\Tools
+ * @uses \Automattic\WordpressMcp\Core\RegisterMcpTool To register the MCP tool.
  */
 class McpSearchPrivateData {
 
@@ -24,6 +25,7 @@ class McpSearchPrivateData {
 	 * Register the tools.
 	 */
 	public function register_tools(): void {
+		// IGNORE. THIS IS NOT AVAILABLE IN THE SDK BUT WORKS ON PROD
 		new RegisterMcpTool(
 			array(
 				'name'                 => 'search_private_data',
@@ -67,7 +69,7 @@ class McpSearchPrivateData {
 		if ( ! empty( $mcp_settings ) && isset( $mcp_settings['openai_api_key'] ) ) {
 			$api_key_from_option = $mcp_settings['openai_api_key'];
 		}
-		$api_key = defined( 'MCP_OPENAI_API_KEY' ) ? \MCP_OPENAI_API_KEY : $api_key_from_option;
+		$api_key = $api_key_from_option;
 
 		if ( empty( $api_key ) ) {
 			return array( 'error' => 'OpenAI API key not configured.' );
@@ -107,12 +109,40 @@ class McpSearchPrivateData {
 	/**
 	 * Permissions callback for the search_private_data tool.
 	 *
-	 * For Phase 1, this allows unauthenticated access as per PRD.
+	 * Checks if the current user has the 'customer' role or higher.
 	 *
 	 * @return bool True if the current user has permission, false otherwise.
 	 */
 	public function permissions_callback(): bool {
-		// For now, restrict to administrators. This should be updated for Phase 2.
-		return current_user_can( 'manage_options' );
+		$user = wp_get_current_user();
+
+		// If user is not logged in, they don't have any roles.
+		if ( ! $user || 0 === $user->ID ) {
+			return false;
+		}
+
+		$allowed_roles = array(
+			'customer',      // WooCommerce customer role.
+			'contributor',
+			'author',
+			'editor',
+			'shop_manager',  // WooCommerce shop manager role.
+			'administrator',
+		);
+
+		// Get the user's roles. This is an array.
+		$user_roles = $user->roles;
+
+		// Check if any of the user's roles are in the allowed_roles array.
+		if ( ! empty( $user_roles ) ) {
+			foreach ( $user_roles as $role ) {
+				if ( in_array( $role, $allowed_roles, true ) ) {
+					return true; // User has at least one of the allowed roles.
+				}
+			}
+		}
+		
+		// User does not have any of the allowed roles.
+		return false;
 	}
 } 
