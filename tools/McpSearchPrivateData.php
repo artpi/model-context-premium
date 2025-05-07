@@ -2,7 +2,6 @@
 declare( strict_types=1 );
 
 use Automattic\WordpressMcp\Core\RegisterMcpTool;
-use stdClass;
 
 /**
  * Class McpSearchPrivateData

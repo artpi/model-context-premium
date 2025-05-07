@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Plugin Name: Template
- * Description: Artpi WordPress plugin template.
- * Version: 0.0.1
+ * Plugin Name: Model Context Premium
+ * Description: Integrates WooCommerce with a Model Context Protocol (MCP) server, allowing AI clients to interact with premium content.
+ * Version: 0.1.0
  * Author: Artpi
  * Author URI: https://piszek.com/
- * Text Domain: template
+ * Text Domain: model-context-premium
  * License: GPL2
  */
 
@@ -15,8 +15,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Define plugin path constant.
+if ( ! defined( 'MCP_PLUGIN_PATH' ) ) {
+	define( 'MCP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+
 // Include the MCP tool class.
-require_once __DIR__ . '/tools/McpSearchPrivateData.php';
+require_once MCP_PLUGIN_PATH . 'tools/McpSearchPrivateData.php';
 
 // Instantiate the class to register the tool.
 new McpSearchPrivateData();
+
+// Include and initialize the settings page.
+if ( is_admin() ) {
+	require_once MCP_PLUGIN_PATH . 'admin/class-mcp-settings.php';
+	/**
+	 * Initialize MCP Settings.
+	 */
+	function mcp_init_settings(): void {
+		$mcp_settings = new MCP_Settings();
+		$mcp_settings->init();
+	}
+	add_action( 'plugins_loaded', 'mcp_init_settings' );
+}
