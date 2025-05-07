@@ -52,7 +52,11 @@ npm run wp-env start
 
 ## TODO
 
-- Streamline auth and account creation using JWT
+- Streamline auth and account creation using JWT. Requiring being logged in makes no sense
 - Fix upstream issues in wordpress-mcp
-- Introduced new product type
+- Introduced new product type where you can point vector store
+- Configurable message
+- See if new version of Cursor puts the payment link in a button
+- Ideally we would auto-close the purchase window
+  
 
