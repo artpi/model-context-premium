@@ -9,3 +9,14 @@
  * Text Domain: template
  * License: GPL2
  */
+
+// Ensure this file is loaded within WordPress context.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Include the MCP tool class.
+require_once __DIR__ . '/tools/McpSearchPrivateData.php';
+
+// Instantiate the class to register the tool.
+new McpSearchPrivateData();
