@@ -26,6 +26,15 @@ require_once MCP_PLUGIN_PATH . 'tools/McpSearchPrivateData.php';
 // Instantiate the class to register the tool.
 new McpSearchPrivateData();
 
+// Include the OpenAI API client.
+require_once MCP_PLUGIN_PATH . 'includes/OpenAI.php';
+
+// Include and register WP-CLI commands if WP-CLI is running.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once MCP_PLUGIN_PATH . 'includes/CLI/VectorStoreCommand.php';
+	WP_CLI::add_command( 'mcp vs', 'ModelContextPremium\CLI\VectorStoreCommand' );
+}
+
 // Include and initialize the settings page.
 if ( is_admin() ) {
 	require_once MCP_PLUGIN_PATH . 'admin/class-mcp-settings.php';
