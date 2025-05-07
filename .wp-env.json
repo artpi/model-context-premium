@@ -2,7 +2,8 @@
 	"plugins": [
 		".",
 		"https://downloads.wordpress.org/plugin/woocommerce.9.8.4.zip",
-		"https://github.com/Automattic/wordpress-mcp/releases/download/v0.1.9/wordpress-mcp.zip"
+		"https://github.com/Automattic/wordpress-mcp/releases/download/v0.1.9/wordpress-mcp.zip",
+		"https://downloads.wordpress.org/plugin/woo-order-test.3.4.zip"
 	],
 	"config": {
 		"WP_DEBUG": true,

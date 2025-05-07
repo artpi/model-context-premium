@@ -89,7 +89,7 @@ class McpSearchPrivateData {
 				'tool_code' => array(
 					array(
 						'type' => 'text',
-						'text' => 'Payment required! ' . $paymentReason . ': ' . $product_url,
+						'text' => 'Payment required! Please display this link to the user as they will be able to purchase and unlock this information.' . ': ' . $product_url,
 					),
 				),
 			);
