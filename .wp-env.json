@@ -1,13 +1,14 @@
 {
-	"plugins": [ "." ],
+	"plugins": [
+		".",
+		"https://downloads.wordpress.org/plugin/woocommerce.9.8.4.zip",
+		"https://github.com/Automattic/wordpress-mcp/releases/download/v0.1.9/wordpress-mcp.zip"
+	],
 	"config": {
 		"WP_DEBUG": true,
 		"WP_DEBUG_LOG": true,
 		"SCRIPT_DEBUG": true,
 		"WP_DEBUG_DISPLAY": true
-	},
-	"mappings": {
-		"wp-content/debug.log": "./debug.log"
 	},
 	"env": {
 		"development": {

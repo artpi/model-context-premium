@@ -1,0 +1,14 @@
+{
+	"mcpServers": {
+	  "model-context-premium": {
+		"command": "npx",
+		"args": ["@automattic/mcp-wordpress-remote"],
+		"env": {
+		  "WP_API_URL": "http://localhost:8901",
+		  "WP_API_USERNAME": "customer",
+		  "WP_API_PASSWORD": "KdHd cM29 Ay3b Dwy6 zqQL Z0sA",
+		  "LOG_FILE": "/Users/artpi/Desktop/mcp.log"
+		}
+	  }
+	}
+  }
