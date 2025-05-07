@@ -61,6 +61,41 @@ class McpSearchPrivateData {
 			return array( 'error' => 'Search term (from query parameter) is missing.' );
 		}
 
+		$current_user = wp_get_current_user();
+		$product_id   = 14; // Hardcoded product ID for Phase 3
+
+		// Check if the user is logged in and has purchased the product.
+		// Ensure WooCommerce is active and wc_customer_bought_product function exists.
+		if ( ! function_exists( 'wc_customer_bought_product' ) ) {
+			return array( 'error' => 'WooCommerce function wc_customer_bought_product not available. Is WooCommerce active?' );
+		}
+
+		if ( ! $current_user || 0 === $current_user->ID || ! wc_customer_bought_product( $current_user->user_email, $current_user->ID, $product_id ) ) {
+			$product_url   = get_permalink( $product_id );
+			$paymentReason = 'Access to this dataset requires purchase'; // Example reason
+
+			if ( ! $product_url || is_wp_error( $product_url ) ) {
+				// Fallback if product URL can't be generated
+				return array(
+					'type' => 'text',
+					'text' => 'Payment required! ' . $paymentReason . '. Product ID: ' . $product_id . ' (Error retrieving product page URL)',
+				);
+			}
+
+			return array(
+				// Simulating the structure the user requested for the MCP client.
+				// This will likely be further refined based on how the MCP client expects "tool_code" type messages for actions.
+				// For now, returning a structured array that can be JSON encoded.
+				'tool_code' => array(
+					array(
+						'type' => 'text',
+						'text' => 'Payment required! ' . $paymentReason . ': ' . $product_url,
+					),
+				),
+			);
+		}
+
+		// User has purchased the product, proceed with vector store search.
 		$vector_store_id = 'vs_680a5bbf54e881919eb4862f0688ea23'; // Hardcoded as per request
 
 		// Retrieve API key (similar to VectorStoreCommand.php)
